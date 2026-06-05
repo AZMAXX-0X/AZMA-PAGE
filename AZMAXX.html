@@ -1,0 +1,2819 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AHMED AZMA — Digital Systems Architect</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&amp;family=Share+Tech+Mono&amp;family=Rajdhani:wght@300;400;600;700&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<style>
+        :root {
+            --black: #000000;
+            --white: #ffffff;
+            --gray-900: #0a0a0a;
+            --gray-800: #111111;
+            --gray-700: #1a1a1a;
+            --gray-600: #222222;
+            --gray-500: #333333;
+            --gray-400: #555555;
+            --gray-300: #888888;
+            --gray-200: #aaaaaa;
+            --gray-100: #cccccc;
+            --silver: #c0c0c0;
+            --glow: rgba(255, 255, 255, 0.15);
+            --glow-strong: rgba(255, 255, 255, 0.4);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: auto;
+        }
+
+        body {
+            background: var(--black);
+            color: var(--white);
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* ═══════════════════════════════════════
+   LOADING SCREEN
+═══════════════════════════════════════ */
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease;
+        }
+
+        .loader-logo {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(3rem, 10vw, 7rem);
+            font-weight: 900;
+            letter-spacing: 0.3em;
+            color: #fff;
+            animation: loaderGlitch 0.15s infinite;
+            position: relative;
+        }
+
+        .loader-logo::before,
+        .loader-logo::after {
+            content: 'AZMA';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .loader-logo::before {
+            color: #aaa;
+            animation: glitchLeft 0.3s infinite;
+            clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%);
+        }
+
+        .loader-logo::after {
+            color: #555;
+            animation: glitchRight 0.4s infinite;
+            clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
+        }
+
+        .loader-bar-wrap {
+            width: 300px;
+            height: 2px;
+            background: #1a1a1a;
+            margin-top: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loader-bar {
+            height: 100%;
+            background: #fff;
+            animation: loadBar 2.5s ease forwards;
+            box-shadow: 0 0 20px #fff;
+        }
+
+        .loader-text {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.75rem;
+            color: #555;
+            margin-top: 1rem;
+            letter-spacing: 0.2em;
+            animation: loaderBlink 0.5s infinite;
+        }
+
+        @keyframes loadBar {
+            from {
+                width: 0;
+            }
+
+            to {
+                width: 100%;
+            }
+        }
+
+        @keyframes loaderBlink {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0
+            }
+        }
+
+        @keyframes loaderGlitch {
+
+            0%,
+            100% {
+                transform: translate(0)
+            }
+
+            33% {
+                transform: translate(-2px, 1px)
+            }
+
+            66% {
+                transform: translate(2px, -1px)
+            }
+        }
+
+        @keyframes glitchLeft {
+
+            0%,
+            100% {
+                transform: translate(0)
+            }
+
+            50% {
+                transform: translate(-4px)
+            }
+        }
+
+        @keyframes glitchRight {
+
+            0%,
+            100% {
+                transform: translate(0)
+            }
+
+            50% {
+                transform: translate(4px)
+            }
+        }
+
+        /* ═══════════════════════════════════════
+   CURSOR
+═══════════════════════════════════════ */
+        #cursor-dot {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background: #fff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px #fff, 0 0 20px rgba(255, 255, 255, 0.5);
+            transition: transform 0.1s;
+        }
+
+        #cursor-ring {
+            position: fixed;
+            width: 36px;
+            height: 36px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9997;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, border-color 0.3s, background 0.3s;
+        }
+
+        body:hover #cursor-ring.hovered {
+            width: 54px;
+            height: 54px;
+            border-color: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* ═══════════════════════════════════════
+   OVERLAYS
+═══════════════════════════════════════ */
+        #scanlines {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            pointer-events: none;
+            background: repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 0, 0, 0.08) 2px,
+                    rgba(0, 0, 0, 0.08) 4px);
+        }
+
+        #noise {
+            position: fixed;
+            inset: 0;
+            z-index: 99;
+            pointer-events: none;
+            opacity: 0.035;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            animation: noiseAnim 0.2s steps(2) infinite;
+        }
+
+        @keyframes noiseAnim {
+            0% {
+                transform: translate(0, 0)
+            }
+
+            25% {
+                transform: translate(-1%, -1%)
+            }
+
+            50% {
+                transform: translate(1%, 0)
+            }
+
+            75% {
+                transform: translate(0, 1%)
+            }
+
+            100% {
+                transform: translate(-1%, 0)
+            }
+        }
+
+        #matrix-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            opacity: 0.06;
+            pointer-events: none;
+        }
+
+        #three-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* ═══════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════ */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 500;
+            padding: 1.25rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background 0.4s, border-bottom 0.4s;
+            border-bottom: 1px solid transparent;
+        }
+
+        nav.scrolled {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.3rem;
+            font-weight: 900;
+            letter-spacing: 0.25em;
+            color: #fff;
+            position: relative;
+            cursor: none;
+        }
+
+        .nav-logo span {
+            color: var(--gray-400);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            color: var(--gray-300);
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #fff;
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        #menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: none;
+            background: none;
+            border: none;
+            padding: 4px;
+        }
+
+        #menu-btn span {
+            display: block;
+            width: 24px;
+            height: 1px;
+            background: #fff;
+            transition: all 0.3s;
+        }
+
+        #mobile-menu {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 490;
+            background: rgba(0, 0, 0, 0.97);
+            backdrop-filter: blur(20px);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2.5rem;
+        }
+
+        #mobile-menu.open {
+            display: flex;
+        }
+
+        #mobile-menu a {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color 0.3s, text-shadow 0.3s;
+        }
+
+        #mobile-menu a:hover {
+            color: var(--silver);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        #mobile-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 2rem;
+            font-size: 2rem;
+            color: #fff;
+            background: none;
+            border: none;
+            cursor: none;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            #menu-btn {
+                display: flex;
+            }
+        }
+
+        /* ═══════════════════════════════════════
+   SECTIONS SHARED
+═══════════════════════════════════════ */
+        section {
+            position: relative;
+            z-index: 10;
+        }
+
+        .section-tag {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.3em;
+            color: var(--gray-400);
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .section-tag::before {
+            content: '// ';
+        }
+
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            line-height: 1;
+            letter-spacing: 0.05em;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(10px);
+            border-radius: 2px;
+            transition: border-color 0.4s, background 0.4s, box-shadow 0.4s;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.04);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.05), inset 0 0 30px rgba(255, 255, 255, 0.02);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        /* ═══════════════════════════════════════
+   HERO SECTION
+═══════════════════════════════════════ */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 6rem 2rem 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-eyebrow {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.4em;
+            color: var(--gray-400);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        .hero-eyebrow::before {
+            content: '[';
+            margin-right: 0.5em;
+        }
+
+        .hero-eyebrow::after {
+            content: ']';
+            margin-left: 0.5em;
+        }
+
+        .hero-name {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(3.5rem, 12vw, 9rem);
+            font-weight: 900;
+            line-height: 0.9;
+            letter-spacing: -0.01em;
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-name .line1 {
+            display: block;
+            color: #fff;
+        }
+
+        .hero-name .line2 {
+            display: block;
+            color: var(--gray-300);
+        }
+
+        .hero-typed-wrap {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+            color: var(--gray-300);
+            margin: 1.5rem 0 2.5rem;
+            letter-spacing: 0.1em;
+            min-height: 2em;
+        }
+
+        .hero-typed-wrap::before {
+            content: '> ';
+            color: var(--gray-500);
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .btn-primary {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            padding: 1rem 2.5rem;
+            background: #fff;
+            color: #000;
+            border: none;
+            cursor: none;
+            transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+            clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+        }
+
+        .btn-primary:hover {
+            background: var(--silver);
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            padding: 1rem 2.5rem;
+            background: transparent;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            cursor: none;
+            transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s;
+            clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+        }
+
+        .btn-outline:hover {
+            border-color: #fff;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        /* Floating terminal windows */
+        .float-terminal {
+            position: absolute;
+            background: rgba(10, 10, 10, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            padding: 1rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-400);
+            pointer-events: none;
+            user-select: none;
+            backdrop-filter: blur(10px);
+        }
+
+        .float-terminal-bar {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 0.75rem;
+            align-items: center;
+        }
+
+        .float-terminal-bar span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .ft-red {
+            background: #333;
+        }
+
+        .ft-yellow {
+            background: #444;
+        }
+
+        .ft-green {
+            background: #555;
+        }
+
+        .float-terminal-title {
+            font-size: 0.6rem;
+            color: var(--gray-500);
+            margin-left: 0.5rem;
+            letter-spacing: 0.1em;
+        }
+
+        .ft-line {
+            margin-bottom: 2px;
+        }
+
+        .ft-prompt {
+            color: var(--gray-600);
+        }
+
+        .ft-cmd {
+            color: var(--gray-300);
+        }
+
+        .ft-out {
+            color: var(--gray-500);
+        }
+
+        .ft1 {
+            top: 15%;
+            left: 2%;
+            width: 280px;
+            animation: floatA 8s ease-in-out infinite;
+            opacity: 0.5;
+        }
+
+        .ft2 {
+            bottom: 20%;
+            right: 3%;
+            width: 260px;
+            animation: floatB 10s ease-in-out infinite;
+            opacity: 0.4;
+        }
+
+        .ft3 {
+            top: 60%;
+            left: 5%;
+            width: 200px;
+            animation: floatC 12s ease-in-out infinite;
+            opacity: 0.3;
+            display: none;
+        }
+
+        @media (min-width: 1200px) {
+            .ft3 {
+                display: block;
+            }
+        }
+
+        @media (max-width: 900px) {
+
+            .ft1,
+            .ft2 {
+                display: none;
+            }
+        }
+
+        @keyframes floatA {
+
+            0%,
+            100% {
+                transform: translate(0, 0) rotate(-1deg)
+            }
+
+            50% {
+                transform: translate(8px, -12px) rotate(0.5deg)
+            }
+        }
+
+        @keyframes floatB {
+
+            0%,
+            100% {
+                transform: translate(0, 0) rotate(1deg)
+            }
+
+            50% {
+                transform: translate(-8px, 10px) rotate(-0.5deg)
+            }
+        }
+
+        @keyframes floatC {
+
+            0%,
+            100% {
+                transform: translate(0, 0)
+            }
+
+            50% {
+                transform: translate(5px, -8px)
+            }
+        }
+
+        /* Scroll indicator */
+        .scroll-hint {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--gray-500);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            animation: scrollFade 2s ease-in-out infinite;
+        }
+
+        .scroll-hint-line {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: scrollLine 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollFade {
+
+            0%,
+            100% {
+                opacity: 0.4
+            }
+
+            50% {
+                opacity: 1
+            }
+        }
+
+        @keyframes scrollLine {
+            0% {
+                transform: scaleY(0) translateY(-50%)
+            }
+
+            50% {
+                transform: scaleY(1) translateY(0)
+            }
+
+            100% {
+                transform: scaleY(0) translateY(50%)
+            }
+        }
+
+        /* ═══════════════════════════════════════
+   ABOUT SECTION
+═══════════════════════════════════════ */
+        #about {
+            min-height: 100vh;
+            padding: 8rem 2rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .about-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .about-inner {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+        }
+
+        .about-left {
+            position: relative;
+        }
+
+        .about-avatar-wrap {
+            width: 260px;
+            height: 340px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .about-avatar-wrap::before {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .about-avatar-wrap::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 20%;
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.5), transparent);
+        }
+
+        .avatar-inner {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .avatar-initials {
+            font-family: 'Orbitron', monospace;
+            font-size: 4rem;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.08);
+            letter-spacing: 0.1em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .about-id-card {
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 1.25rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-400);
+            min-width: 180px;
+        }
+
+        .about-id-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .about-id-label {
+            color: var(--gray-600);
+        }
+
+        .about-id-val {
+            color: var(--gray-200);
+        }
+
+        .about-right {}
+
+        .about-bio {
+            font-size: 1.05rem;
+            color: var(--gray-200);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-bio strong {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .about-quote {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--gray-400);
+            border-left: 2px solid rgba(255, 255, 255, 0.15);
+            padding-left: 1.25rem;
+            margin: 2rem 0;
+            font-style: italic;
+            line-height: 1.7;
+        }
+
+        .about-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .about-tag {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.65rem;
+            padding: 0.35rem 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray-300);
+            letter-spacing: 0.1em;
+            transition: border-color 0.3s, color 0.3s, box-shadow 0.3s;
+        }
+
+        .about-tag:hover {
+            border-color: rgba(255, 255, 255, 0.4);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.08);
+        }
+
+        /* ═══════════════════════════════════════
+   SKILLS SECTION
+═══════════════════════════════════════ */
+        #skills {
+            padding: 8rem 2rem;
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin-top: 4rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .skill-card {
+            padding: 2rem;
+            cursor: none;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: scaleX(0);
+            transition: transform 0.4s;
+        }
+
+        .skill-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .skill-icon {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-600);
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+        }
+
+        .skill-name {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            margin-bottom: 1.25rem;
+            color: #fff;
+        }
+
+        .skill-bar-wrap {
+            height: 2px;
+            background: rgba(255, 255, 255, 0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-bar {
+            height: 100%;
+            background: rgba(255, 255, 255, 0.5);
+            width: 0;
+            transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        .skill-bar::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #fff;
+        }
+
+        .skill-percent {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--gray-500);
+            margin-top: 0.5rem;
+            text-align: right;
+        }
+
+        /* ═══════════════════════════════════════
+   TERMINAL SECTION
+═══════════════════════════════════════ */
+        #terminal-section {
+            padding: 8rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 70vh;
+        }
+
+        .terminal-wrap {
+            max-width: 860px;
+            width: 100%;
+        }
+
+        .terminal-window {
+            background: rgba(4, 4, 4, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8), 0 0 60px rgba(255, 255, 255, 0.03);
+        }
+
+        .terminal-titlebar {
+            background: rgba(255, 255, 255, 0.04);
+            padding: 0.75rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .tbar-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .td-red {
+            background: #2a1a1a;
+        }
+
+        .td-yel {
+            background: #2a2a1a;
+        }
+
+        .td-grn {
+            background: #1a2a1a;
+        }
+
+        .tbar-title {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-500);
+            margin-left: auto;
+            letter-spacing: 0.15em;
+        }
+
+        .terminal-body {
+            padding: 1.5rem;
+            min-height: 420px;
+            max-height: 480px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .terminal-body::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .terminal-body::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .terminal-body::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .t-line {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            line-height: 1.8;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .t-prompt {
+            color: var(--gray-500);
+        }
+
+        .t-user {
+            color: var(--gray-300);
+        }
+
+        .t-root {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .t-out {
+            color: var(--gray-400);
+        }
+
+        .t-highlight {
+            color: #fff;
+        }
+
+        .t-dim {
+            color: var(--gray-600);
+        }
+
+        .t-link {
+            color: var(--silver);
+            text-decoration: underline;
+            cursor: none;
+        }
+
+        .terminal-input-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .terminal-prompt-label {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--gray-500);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .terminal-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            color: #fff;
+            caret-color: transparent;
+        }
+
+        .cursor-blink {
+            display: inline-block;
+            width: 8px;
+            height: 14px;
+            background: #fff;
+            vertical-align: middle;
+            animation: blink 1s step-end infinite;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0
+            }
+        }
+
+        /* ═══════════════════════════════════════
+   SERVICES SECTION
+═══════════════════════════════════════ */
+        #services {
+            padding: 8rem 2rem;
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .services-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .services-intro {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--gray-400);
+            line-height: 1.9;
+            max-width: 640px;
+            margin: 2rem 0 4rem;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            margin-bottom: 5rem;
+        }
+
+        .service-cell {
+            background: var(--black);
+            padding: 2.5rem 2rem;
+            position: relative;
+            overflow: hidden;
+            cursor: none;
+            transition: background 0.3s;
+        }
+
+        .service-cell:hover {
+            background: rgba(255, 255, 255, 0.025);
+        }
+
+        .service-cell::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .service-cell:hover::after {
+            opacity: 1;
+        }
+
+        .service-num {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.6rem;
+            color: var(--gray-600);
+            letter-spacing: 0.3em;
+            margin-bottom: 1.25rem;
+        }
+
+        .service-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+            color: #fff;
+        }
+
+        .service-desc {
+            font-size: 0.85rem;
+            color: var(--gray-400);
+            line-height: 1.7;
+        }
+
+        /* World map / regions */
+        .regions-panel {
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .regions-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            margin-bottom: 2rem;
+            color: var(--gray-200);
+        }
+
+        .regions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1rem;
+        }
+
+        .region-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--gray-400);
+            padding: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s;
+            cursor: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .region-item:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .region-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            animation: pulseDot 2s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes pulseDot {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 0 6px rgba(255, 255, 255, 0);
+            }
+        }
+
+        .region-item:nth-child(2) .region-dot {
+            animation-delay: 0.3s;
+        }
+
+        .region-item:nth-child(3) .region-dot {
+            animation-delay: 0.6s;
+        }
+
+        .region-item:nth-child(4) .region-dot {
+            animation-delay: 0.9s;
+        }
+
+        .region-item:nth-child(5) .region-dot {
+            animation-delay: 1.2s;
+        }
+
+        .region-item:nth-child(6) .region-dot {
+            animation-delay: 1.5s;
+        }
+
+        .region-item:nth-child(7) .region-dot {
+            animation-delay: 1.8s;
+        }
+
+        .region-item:nth-child(8) .region-dot {
+            animation-delay: 2.1s;
+        }
+
+        /* ═══════════════════════════════════════
+   PROJECTS SECTION
+═══════════════════════════════════════ */
+        #projects {
+            padding: 8rem 2rem;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-top: 4rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .project-card {
+            padding: 2.5rem 2rem;
+            cursor: none;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-style: preserve-3d;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
+        .project-num {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.04);
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            line-height: 1;
+        }
+
+        .project-tag {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--gray-600);
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+        }
+
+        .project-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            color: #fff;
+            line-height: 1.3;
+        }
+
+        .project-desc {
+            font-size: 0.85rem;
+            color: var(--gray-400);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        .proj-tag {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.58rem;
+            padding: 0.25rem 0.6rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--gray-500);
+            letter-spacing: 0.1em;
+        }
+
+        /* ═══════════════════════════════════════
+   STATS SECTION
+═══════════════════════════════════════ */
+        #stats {
+            padding: 8rem 2rem;
+            background: rgba(255, 255, 255, 0.01);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #stats::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 50%, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 2px;
+            max-width: 1000px;
+            margin: 4rem auto 0;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .stat-cell {
+            background: var(--black);
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            cursor: none;
+            transition: background 0.3s;
+        }
+
+        .stat-cell:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .stat-num {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #fff;
+            line-height: 1;
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 2px;
+        }
+
+        .stat-plus {
+            font-size: 1.5rem;
+            color: var(--gray-400);
+        }
+
+        .stat-label {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--gray-500);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-top: 0.75rem;
+        }
+
+        .stat-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: scaleX(0);
+            transition: transform 1s;
+        }
+
+        .stat-cell:hover .stat-bar {
+            transform: scaleX(1);
+        }
+
+        /* ═══════════════════════════════════════
+   CONTACT SECTION
+═══════════════════════════════════════ */
+        #contact {
+            padding: 8rem 2rem;
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .contact-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .contact-card {
+            padding: 2.5rem;
+            cursor: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.3s;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .contact-card-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 1.4rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .contact-card:hover .contact-card-icon {
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .contact-card-platform {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            color: var(--gray-200);
+        }
+
+        .contact-card-handle {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--gray-400);
+        }
+
+        .contact-card-desc {
+            font-size: 0.8rem;
+            color: var(--gray-600);
+            line-height: 1.6;
+        }
+
+        .contact-cta-row {
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-500);
+            letter-spacing: 0.15em;
+            transition: color 0.3s;
+        }
+
+        .contact-card:hover .contact-cta-row {
+            color: var(--gray-200);
+        }
+
+        .contact-cta-arrow {
+            transition: transform 0.3s;
+        }
+
+        .contact-card:hover .contact-cta-arrow {
+            transform: translateX(6px);
+        }
+
+        /* ═══════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════ */
+        footer {
+            padding: 4rem 2rem 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: 'AZMA';
+            position: absolute;
+            bottom: -2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Orbitron', monospace;
+            font-size: 8rem;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.015);
+            letter-spacing: 0.2em;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        .footer-logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: 0.3em;
+            color: #fff;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-copy {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-600);
+            letter-spacing: 0.15em;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .footer-links a {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-500);
+            text-decoration: none;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--gray-200);
+        }
+
+        /* ═══════════════════════════════════════
+   GLITCH FLASH
+═══════════════════════════════════════ */
+        .glitch-flash {
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            pointer-events: none;
+            background: rgba(255, 255, 255, 0.03);
+            opacity: 0;
+        }
+
+        /* ═══════════════════════════════════════
+   SECTION DIVIDER
+═══════════════════════════════════════ */
+        .section-divider {
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.06), transparent);
+        }
+
+        /* ═══════════════════════════════════════
+   UTITLITIES
+═══════════════════════════════════════ */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .text-silver {
+            color: var(--silver);
+        }
+
+        .mono {
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        /* Animated border */
+        @keyframes borderGlow {
+
+            0%,
+            100% {
+                border-color: rgba(255, 255, 255, 0.07);
+            }
+
+            50% {
+                border-color: rgba(255, 255, 255, 0.18);
+            }
+        }
+
+        .anim-border {
+            animation: borderGlow 4s ease-in-out infinite;
+        }
+
+        /* Glitch text utility */
+        .glitch-text {
+            position: relative;
+        }
+
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+        }
+
+        .glitch-text.glitching::before {
+            opacity: 0.8;
+            color: rgba(255, 255, 255, 0.6);
+            clip-path: polygon(0 20%, 100% 20%, 100% 35%, 0 35%);
+            transform: translateX(-3px);
+            animation: glitchA 0.1s forwards;
+        }
+
+        .glitch-text.glitching::after {
+            opacity: 0.6;
+            color: rgba(180, 180, 180, 0.6);
+            clip-path: polygon(0 65%, 100% 65%, 100% 80%, 0 80%);
+            transform: translateX(3px);
+            animation: glitchB 0.12s forwards;
+        }
+
+        @keyframes glitchA {
+            0% {
+                transform: translateX(-3px)
+            }
+
+            100% {
+                transform: translateX(0);
+                opacity: 0
+            }
+        }
+
+        @keyframes glitchB {
+            0% {
+                transform: translateX(3px)
+            }
+
+            100% {
+                transform: translateX(0);
+                opacity: 0
+            }
+        }
+
+        /* Live log */
+        #live-log {
+            position: fixed;
+            bottom: 1rem;
+            left: 1rem;
+            z-index: 50;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.55rem;
+            color: rgba(255, 255, 255, 0.08);
+            pointer-events: none;
+            max-width: 260px;
+        }
+
+        .log-line {
+            display: block;
+            animation: logFade 8s ease forwards;
+        }
+
+        @keyframes logFade {
+            0% {
+                opacity: 0
+            }
+
+            10% {
+                opacity: 1
+            }
+
+            80% {
+                opacity: 1
+            }
+
+            100% {
+                opacity: 0
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- LOADING SCREEN -->
+<div id="loader">
+<div class="loader-logo">AZMA</div>
+<div class="loader-bar-wrap">
+<div class="loader-bar"></div>
+</div>
+<div class="loader-text">INITIALIZING SECURE ENVIRONMENT...</div>
+</div>
+<!-- OVERLAYS -->
+<div id="scanlines"></div>
+<div id="noise"></div>
+<div class="glitch-flash" id="glitch-flash"></div>
+<canvas id="matrix-canvas"></canvas>
+<canvas id="three-canvas"></canvas>
+<!-- LIVE LOG -->
+<div id="live-log"></div>
+<!-- CURSOR -->
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+<!-- MOBILE MENU -->
+<div id="mobile-menu">
+<button id="mobile-close">✕</button>
+<a class="mobile-nav-link" href="#about">About</a>
+<a class="mobile-nav-link" href="#skills">Skills</a>
+<a class="mobile-nav-link" href="#terminal-section">Terminal</a>
+<a class="mobile-nav-link" href="#services">Services</a>
+<a class="mobile-nav-link" href="#projects">Projects</a>
+<a class="mobile-nav-link" href="#contact">Contact</a>
+</div>
+<!-- NAVIGATION -->
+<nav id="navbar">
+<div class="nav-logo">AZ<span>MA</span></div>
+<ul class="nav-links">
+<li><a href="#about">About</a></li>
+<li><a href="#skills">Skills</a></li>
+<li><a href="#terminal-section">Terminal</a></li>
+<li><a href="#services">Services</a></li>
+<li><a href="#projects">Projects</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul>
+<button aria-label="Menu" id="menu-btn">
+<span></span><span></span><span></span>
+</button>
+</nav>
+<!-- ═══════════════════════════════
+     HERO SECTION
+═══════════════════════════════ -->
+<section id="hero">
+<!-- Floating terminal windows -->
+<div class="float-terminal ft1">
+<div class="float-terminal-bar">
+<span class="ft-red"></span><span class="ft-yellow"></span><span class="ft-green"></span>
+<span class="float-terminal-title">system@azma:~$</span>
+</div>
+<div class="ft-line"><span class="ft-prompt">$ </span><span class="ft-cmd">python3 bot_engine.py
+                    --start</span></div>
+<div class="ft-line ft-out">[+] Loading modules... done</div>
+<div class="ft-line ft-out">[+] Connecting to Telegram API...</div>
+<div class="ft-line ft-out">[+] Handlers registered: 47</div>
+<div class="ft-line ft-out">[+] Bot online — awaiting commands</div>
+<div class="ft-line"><span class="ft-prompt">$ </span><span class="ft-cmd">status --all</span></div>
+<div class="ft-line ft-out">Systems: <span style="color:#888">OPERATIONAL</span></div>
+</div>
+<div class="float-terminal ft2">
+<div class="float-terminal-bar">
+<span class="ft-red"></span><span class="ft-yellow"></span><span class="ft-green"></span>
+<span class="float-terminal-title">net@azma:~$</span>
+</div>
+<div class="ft-line"><span class="ft-prompt">$ </span><span class="ft-cmd">./scanner.sh --target
+                    networks</span></div>
+<div class="ft-line ft-out">[*] Scanning endpoints...</div>
+<div class="ft-line ft-out">[+] Nodes active: 2,847</div>
+<div class="ft-line ft-out">[+] APIs connected: 128</div>
+<div class="ft-line ft-out">[+] Latency: 12ms avg</div>
+</div>
+<div class="float-terminal ft3">
+<div class="float-terminal-bar">
+<span class="ft-red"></span><span class="ft-yellow"></span><span class="ft-green"></span>
+<span class="float-terminal-title">db@azma:~$</span>
+</div>
+<div class="ft-line"><span class="ft-prompt">$ </span><span class="ft-cmd">psql --status</span></div>
+<div class="ft-line ft-out">Records: 1.4M</div>
+<div class="ft-line ft-out">Uptime: 99.97%</div>
+</div>
+<div class="hero-eyebrow reveal">SECURE DIGITAL SYSTEMS ARCHITECT</div>
+<h1 class="hero-name reveal" data-text="AHMED AZMA" id="hero-name">
+<span class="line1">AHMED</span>
+<span class="line2">AZMA</span>
+</h1>
+<div class="hero-typed-wrap reveal">
+<span id="typed-text"></span>
+</div>
+<div class="hero-btns reveal">
+<a class="btn-primary" href="#projects">Access Network</a>
+<a class="btn-outline" href="#contact">Contact Securely</a>
+</div>
+<div class="scroll-hint">
+<div class="scroll-hint-line"></div>
+<span>Scroll</span>
+</div>
+</section>
+<div class="section-divider"></div>
+<!-- ═══════════════════════════════
+     ABOUT SECTION
+═══════════════════════════════ -->
+<section id="about">
+<div class="about-inner">
+<div class="about-left reveal">
+<div class="about-avatar-wrap anim-border">
+<div class="avatar-inner">
+<div style="text-align:center;">
+<div style="font-family:'Orbitron',monospace; font-size:0.6rem; letter-spacing:0.3em; color:#333; margin-bottom:1rem;">
+                                IDENTITY VERIFIED</div>
+<div style="font-family:'Orbitron',monospace; font-size:5rem; font-weight:900; color:rgba(255,255,255,0.07); line-height:1;">
+                                AA</div>
+<div style="font-family:'Share Tech Mono',monospace; font-size:0.55rem; color:#2a2a2a; letter-spacing:0.2em; margin-top:1rem;">
+<div>UID: 0xAZMA_7F3C</div>
+<div>CLEARANCE: ALPHA</div>
+<div>STATUS: ONLINE</div>
+</div>
+</div>
+</div>
+<div class="about-id-card">
+<div class="about-id-row"><span class="about-id-label">ROLE</span><span class="about-id-val">SYS_ARCHITECT</span></div>
+<div class="about-id-row"><span class="about-id-label">LANG</span><span class="about-id-val">Python / JS</span></div>
+<div class="about-id-row"><span class="about-id-label">BASE</span><span class="about-id-val">REMOTE</span></div>
+<div class="about-id-row"><span class="about-id-label">ACTIVE</span><span class="about-id-val">24/7</span></div>
+</div>
+</div>
+</div>
+<div class="about-right">
+<div class="section-tag reveal">System Profile</div>
+<h2 class="section-title reveal" style="margin-bottom:2rem;">
+                    Behind The<br/><span style="color:var(--gray-400);">Digital Veil</span>
+</h2>
+<p class="about-bio reveal">
+<strong>Ahmed Azma</strong> is an elite Telegram automation engineer and digital systems architect,
+                    operating at the intersection of deep backend engineering and intelligent automation.
+                    His systems power thousands of automated workflows silently, efficiently, relentlessly.
+                </p>
+<div class="about-quote reveal">
+                    "Operating behind digital shadows, building systems beyond ordinary limits — where most engineers
+                    see endpoints, Azma sees entire empires."
+                </div>
+<p class="about-bio reveal">
+                    A <strong>Telegram-obsessed developer</strong> who has built legendary bots and automation
+                    frameworks from the ground up.
+                    Fluent in Python, APIs, web scraping, and backend architecture.
+                    Deeply versed in <strong>Linux infrastructure</strong>, security research, and reverse engineering.
+                    Every system he touches becomes faster, smarter, and more autonomous.
+                </p>
+<div class="about-tags reveal">
+<span class="about-tag">Telegram Automation</span>
+<span class="about-tag">Python Engineering</span>
+<span class="about-tag">API Architecture</span>
+<span class="about-tag">Web Scraping</span>
+<span class="about-tag">Linux Systems</span>
+<span class="about-tag">Security Research</span>
+<span class="about-tag">Backend Design</span>
+<span class="about-tag">Database Systems</span>
+</div>
+</div>
+</div>
+</section>
+<div class="section-divider"></div>
+<!-- ═══════════════════════════════
+     SKILLS SECTION
+═══════════════════════════════ -->
+<section id="skills">
+<div class="container">
+<div class="section-tag reveal">Capabilities Matrix</div>
+<h2 class="section-title reveal">Technical<br/><span style="color:var(--gray-400);">Arsenal</span></h2>
+<div class="skills-grid">
+<div class="skill-card glass-card reveal" data-skill="96">
+<div class="skill-icon">SYS_01</div>
+<div class="skill-name">Telegram Bots</div>
+<div class="skill-bar-wrap">
+<div class="skill-bar"></div>
+</div>
+<div class="skill-percent">96%</div>
+</div>
+<div class="skill-card glass-card reveal" data-skill="94">
+<div class="skill-icon">SYS_02</div>
+<div class="skill-name">Automation Systems</div>
+<div class="skill-bar-wrap">
+<div class="skill-bar"></div>
+</div>
+<div class="skill-percent">94%</div>
+</div>
+<div class="skill-card glass-card reveal" data-skill="92">
+<div class="skill-icon">SYS_03</div>
+<div class="skill-name">Python Development</div>
+<div class="skill-bar-wrap">
+<div class="skill-bar"></div>
+</div>
+<div class="skill-percent">92%</div>
+</div>
+<div class="skill-card glass-card reveal" data-skill="90">
+<div class="skill-icon">SYS_04</div>
+<div class="skill-name">Web Scraping</div>
+<div class="skill-bar-wrap">
+<div class="skill-bar"></div>
+</div>
+<div class="skill-percent">90%</div>
+</div>
+<div class="skill-card glass-card reveal" data-skill="88">
+<div class="skill-icon">SYS_05</div>
+<div class="skill-name">API Integration</div>
+<div class="skill-bar-wrap">
+<div class="skill-bar"></div>
+</div>
+<div class="skill-percent">88%</div>
+</div>
+<div class="skill-card glass-card reveal" data-skill="86">
+<div class="skill-icon">SYS_06</div>
+<div class="skill-name">Backend Engineering</div>
+<div class="skill-bar-wrap">
+<div class="skill-bar"></div>
+</div>
+<div class="skill-percent">86%</div>
+</div>
+<div class="skill-card glass-card reveal" data-skill="84">
+<div class="skill-icon">SYS_07</div>
+<div class="skill-name">Security Research</div>
+<div class="skill-bar-wrap">
+<div class="skill-bar"></div>
+</div>
+<div class="skill-percent">84%</div>
+</div>
+<div class="skill-card glass-card reveal" data-skill="90">
+<div class="skill-icon">SYS_08</div>
+<div class="skill-name">Linux Systems</div>
+<div class="skill-bar-wrap">
+<div class="skill-bar"></div>
+</div>
+<div class="skill-percent">90%</div>
+</div>
+<div class="skill-card glass-card reveal" data-skill="80">
+<div class="skill-icon">SYS_09</div>
+<div class="skill-name">Reverse Engineering</div>
+<div class="skill-bar-wrap">
+<div class="skill-bar"></div>
+</div>
+<div class="skill-percent">80%</div>
+</div>
+<div class="skill-card glass-card reveal" data-skill="88">
+<div class="skill-icon">SYS_10</div>
+<div class="skill-name">Database Management</div>
+<div class="skill-bar-wrap">
+<div class="skill-bar"></div>
+</div>
+<div class="skill-percent">88%</div>
+</div>
+</div>
+</div>
+</section>
+<div class="section-divider"></div>
+<!-- ═══════════════════════════════
+     TERMINAL SECTION
+═══════════════════════════════ -->
+<section id="terminal-section">
+<div class="terminal-wrap">
+<div class="section-tag reveal" style="text-align:center; margin-bottom:3rem;">Interactive System Interface
+            </div>
+<div class="terminal-window reveal anim-border">
+<div class="terminal-titlebar">
+<span class="tbar-dot td-red"></span>
+<span class="tbar-dot td-yel"></span>
+<span class="tbar-dot td-grn"></span>
+<span class="tbar-title">azma@phantom-node:~$ — bash — 128×38</span>
+</div>
+<div class="terminal-body" id="terminal-body">
+<span class="t-line"><span class="t-dim">╔══════════════════════════════════════════════╗</span></span>
+<span class="t-line"><span class="t-dim">║</span> <span class="t-highlight">AZMA SYSTEM
+                            v2.7.1</span> <span class="t-dim">// SECURE SHELL ║</span></span>
+<span class="t-line"><span class="t-dim">║</span> <span class="t-out">Connected:
+                            phantom-node-07.azma.net</span> <span class="t-dim"> ║</span></span>
+<span class="t-line"><span class="t-dim">╚══════════════════════════════════════════════╝</span></span>
+<span class="t-line"> </span>
+<span class="t-line"><span class="t-out">Type </span><span class="t-highlight">help</span><span class="t-out"> to see available commands.</span></span>
+<span class="t-line"> </span>
+</div>
+<div class="terminal-input-row">
+<span class="terminal-prompt-label">azma@phantom:~$ </span>
+<input autocomplete="off" class="terminal-input" id="terminal-input" placeholder="" spellcheck="false" type="text"/>
+<span class="cursor-blink"></span>
+</div>
+</div>
+</div>
+</section>
+<div class="section-divider"></div>
+<!-- ═══════════════════════════════
+     SERVICES SECTION
+═══════════════════════════════ -->
+<section id="services">
+<div class="services-inner">
+<div class="section-tag reveal">Digital Infrastructure</div>
+<h2 class="section-title reveal">Global Virtual<br/><span style="color:var(--gray-400);">Communication
+                    Systems</span></h2>
+<p class="services-intro reveal">
+                Providing premium global communication infrastructure and virtual verification solutions with automated
+                high-speed delivery systems — engineered for businesses, developers, and organizations requiring
+                reliable international digital connectivity.
+            </p>
+<div class="services-grid reveal">
+<div class="service-cell">
+<div class="service-num">01 //</div>
+<div class="service-title">International Virtual Numbers</div>
+<div class="service-desc">Premium virtual communication lines from 50+ countries. Fully automated
+                        provisioning with enterprise-grade reliability and instant activation.</div>
+</div>
+<div class="service-cell">
+<div class="service-num">02 //</div>
+<div class="service-title">Global SMS Solutions</div>
+<div class="service-desc">High-throughput international SMS infrastructure. Real-time message
+                        routing with near-zero latency and industry-leading delivery rates.</div>
+</div>
+<div class="service-cell">
+<div class="service-num">03 //</div>
+<div class="service-title">Business Verification Systems</div>
+<div class="service-desc">Automated digital verification infrastructure for enterprises. Scalable,
+                        reliable, and fully compliant with international communication standards.</div>
+</div>
+<div class="service-cell">
+<div class="service-num">04 //</div>
+<div class="service-title">Automated Number Delivery</div>
+<div class="service-desc">AI-powered provisioning engine with sub-second delivery timelines.
+                        Integrated dashboard management and full API access for developers.</div>
+</div>
+<div class="service-cell">
+<div class="service-num">05 //</div>
+<div class="service-title">Premium USA &amp; UK Lines</div>
+<div class="service-desc">High-quality North American and European virtual lines. Tier-1
+                        carrier-grade quality with dedicated support and guaranteed uptime SLAs.</div>
+</div>
+<div class="service-cell">
+<div class="service-num">06 //</div>
+<div class="service-title">Developer API Access</div>
+<div class="service-desc">RESTful API with Webhook support, real-time event streaming, and
+                        comprehensive SDK libraries for Python, Node.js, and more.</div>
+</div>
+</div>
+<div class="regions-panel reveal anim-border">
+<div class="regions-title">// Supported Regions — Global Coverage</div>
+<div class="regions-grid">
+<div class="region-item"><span class="region-dot"></span>🇺🇸 USA</div>
+<div class="region-item"><span class="region-dot"></span>🇬🇧 UK</div>
+<div class="region-item"><span class="region-dot"></span>🇨🇦 Canada</div>
+<div class="region-item"><span class="region-dot"></span>🇩🇪 Germany</div>
+<div class="region-item"><span class="region-dot"></span>🇫🇷 France</div>
+<div class="region-item"><span class="region-dot"></span>🇳🇱 Netherlands</div>
+<div class="region-item"><span class="region-dot"></span>🇷🇺 Russia</div>
+<div class="region-item"><span class="region-dot"></span>🇦🇪 UAE</div>
+</div>
+</div>
+</div>
+</section>
+<div class="section-divider"></div>
+<!-- ═══════════════════════════════
+     PROJECTS SECTION
+═══════════════════════════════ -->
+<section id="projects">
+<div class="container">
+<div class="section-tag reveal">System Deployments</div>
+<h2 class="section-title reveal">Active<br/><span style="color:var(--gray-400);">Projects</span></h2>
+<div class="projects-grid">
+<div class="project-card glass-card reveal">
+<div class="project-num">01</div>
+<div class="project-tag">AUTOMATION // BOT_FRAMEWORK</div>
+<div class="project-title">Telegram Automation Engine</div>
+<div class="project-desc">Enterprise-grade multi-bot automation framework with dynamic handler
+                        registration, rate-limit management, and self-healing capabilities. Processes millions of events
+                        per day.</div>
+<div class="project-tags">
+<span class="proj-tag">Python</span><span class="proj-tag">Telethon</span><span class="proj-tag">Redis</span><span class="proj-tag">PostgreSQL</span>
+</div>
+</div>
+<div class="project-card glass-card reveal">
+<div class="project-num">02</div>
+<div class="project-tag">MANAGEMENT // BOT_SYSTEM</div>
+<div class="project-title">Community Management Platform</div>
+<div class="project-desc">Fully automated community management system with AI-powered moderation,
+                        analytics dashboards, and custom rule engines for large Telegram communities.</div>
+<div class="project-tags">
+<span class="proj-tag">Python</span><span class="proj-tag">AI/ML</span><span class="proj-tag">FastAPI</span><span class="proj-tag">Docker</span>
+</div>
+</div>
+<div class="project-card glass-card reveal">
+<div class="project-num">03</div>
+<div class="project-tag">MONITORING // DASHBOARD</div>
+<div class="project-title">Real-Time Monitoring Dashboard</div>
+<div class="project-desc">Live system monitoring platform with custom alerting pipelines,
+                        multi-source data aggregation, and cinematic visualization panels. Sub-second alert delivery.
+                    </div>
+<div class="project-tags">
+<span class="proj-tag">Node.js</span><span class="proj-tag">WebSockets</span><span class="proj-tag">InfluxDB</span>
+</div>
+</div>
+<div class="project-card glass-card reveal">
+<div class="project-num">04</div>
+<div class="project-tag">SECURITY // RESEARCH_TOOL</div>
+<div class="project-title">Network Analysis Toolkit</div>
+<div class="project-desc">Custom security research and network analysis toolkit built for ethical
+                        penetration testing and infrastructure auditing. Fully modular plugin architecture.</div>
+<div class="project-tags">
+<span class="proj-tag">Python</span><span class="proj-tag">Scapy</span><span class="proj-tag">Linux</span>
+</div>
+</div>
+<div class="project-card glass-card reveal">
+<div class="project-num">05</div>
+<div class="project-tag">SCRAPING // DATA_ENGINE</div>
+<div class="project-title">Distributed Scraping Engine</div>
+<div class="project-desc">High-throughput distributed web scraping infrastructure with intelligent
+                        request scheduling, proxy rotation, and structured data export pipelines.</div>
+<div class="project-tags">
+<span class="proj-tag">Python</span><span class="proj-tag">Scrapy</span><span class="proj-tag">Celery</span><span class="proj-tag">MongoDB</span>
+</div>
+</div>
+<div class="project-card glass-card reveal">
+<div class="project-num">06</div>
+<div class="project-tag">AI // SMART_UTILITY</div>
+<div class="project-title">AI-Powered Assistant Bot</div>
+<div class="project-desc">GPT-integrated Telegram assistant with context memory, multi-modal input
+                        processing, and seamless API chaining for complex automated workflows.</div>
+<div class="project-tags">
+<span class="proj-tag">Python</span><span class="proj-tag">OpenAI</span><span class="proj-tag">LangChain</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<div class="section-divider"></div>
+<!-- ═══════════════════════════════
+     STATS SECTION
+═══════════════════════════════ -->
+<section id="stats">
+<div class="container" style="position:relative; z-index:1;">
+<div class="section-tag reveal" style="text-align:center;">System Analytics</div>
+<h2 class="section-title reveal" style="text-align:center;">Live<br/><span style="color:var(--gray-400);">Metrics</span></h2>
+<div class="stats-grid">
+<div class="stat-cell reveal">
+<div class="stat-num" data-target="200"><span class="counter">0</span><span class="stat-plus">+</span></div>
+<div class="stat-label">Bots Created</div>
+<div class="stat-bar"></div>
+</div>
+<div class="stat-cell reveal">
+<div class="stat-num" data-target="50"><span class="counter">0</span><span class="stat-plus">M+</span></div>
+<div class="stat-label">Automated Tasks</div>
+<div class="stat-bar"></div>
+</div>
+<div class="stat-cell reveal">
+<div class="stat-num" data-target="47"><span class="counter">0</span><span class="stat-plus"></span>
+</div>
+<div class="stat-label">Systems Online</div>
+<div class="stat-bar"></div>
+</div>
+<div class="stat-cell reveal">
+<div class="stat-num" data-target="500"><span class="counter">0</span><span class="stat-plus">+</span></div>
+<div class="stat-label">Active Clients</div>
+<div class="stat-bar"></div>
+</div>
+<div class="stat-cell reveal">
+<div class="stat-num" data-target="128"><span class="counter">0</span><span class="stat-plus"></span></div>
+<div class="stat-label">APIs Connected</div>
+<div class="stat-bar"></div>
+</div>
+</div>
+</div>
+</section>
+<div class="section-divider"></div>
+<!-- ═══════════════════════════════
+     CONTACT SECTION
+═══════════════════════════════ -->
+<section id="contact">
+<div class="contact-inner">
+<div class="section-tag reveal">Secure Communication Channels</div>
+<h2 class="section-title reveal">Establish<br/><span style="color:var(--gray-400);">Connection</span></h2>
+<p class="reveal" style="font-family:'Share Tech Mono',monospace; font-size:0.8rem; color:var(--gray-500); margin-top:1rem; max-width:480px; line-height:1.8;">
+                All channels are monitored. Response protocols are active. Choose your preferred vector.
+            </p>
+<div class="contact-grid">
+<a class="contact-card glass-card reveal" href="https://wa.me/+201144118011" rel="noopener" target="_blank">
+<div class="contact-card-icon">💬</div>
+<div class="contact-card-platform">WhatsApp</div>
+<div class="contact-card-handle">+20 114 411 8011</div>
+<div class="contact-card-desc">Direct encrypted messaging for project inquiries, service requests,
+                        and technical consultation.</div>
+<div class="contact-cta-row">Open Channel <span class="contact-cta-arrow">→</span></div>
+</a>
+<a class="contact-card glass-card reveal" href="https://t.me/AZMA_XBAN" rel="noopener" target="_blank">
+<div class="contact-card-icon">📡</div>
+<div class="contact-card-platform">Telegram Channel</div>
+<div class="contact-card-handle">@AZMA_XBAN</div>
+<div class="contact-card-desc">Official broadcast channel for project updates, service
+                        announcements, and system status feeds.</div>
+<div class="contact-cta-row">Join Channel <span class="contact-cta-arrow">→</span></div>
+</a>
+<a class="contact-card glass-card reveal" href="https://t.me/AZMA_S1" rel="noopener" target="_blank">
+<div class="contact-card-icon">🔒</div>
+<div class="contact-card-platform">Direct Telegram</div>
+<div class="contact-card-handle">@AZMA_S1</div>
+<div class="contact-card-desc">Private direct line for high-priority project collaboration,
+                        technical partnerships, and urgent requests.</div>
+<div class="contact-cta-row">Connect Directly <span class="contact-cta-arrow">→</span></div>
+</a>
+</div>
+</div>
+</section>
+<!-- ═══════════════════════════════
+     FOOTER
+═══════════════════════════════ -->
+<footer>
+<div class="footer-logo">AZMA</div>
+<div class="footer-links">
+<a href="#about">About</a>
+<a href="#skills">Skills</a>
+<a href="#projects">Projects</a>
+<a href="#contact">Contact</a>
+</div>
+<div class="footer-copy">
+<span style="font-family:'Share Tech Mono',monospace; font-size:0.6rem; color:#222;">
+                © 2024 AHMED AZMA — DIGITAL SYSTEMS ARCHITECT<br/>
+<span style="color:#1a1a1a;">// ALL SYSTEMS OPERATIONAL // UPTIME: 99.97% //</span>
+</span>
+</div>
+</footer>
+<!-- ═══════════════════════════════════════════════
+     SCRIPTS
+═══════════════════════════════════════════════ -->
+<script>
+        /* ── MATRIX RAIN ─────────────────────────────── */
+        (function () {
+            const canvas = document.getElementById('matrix-canvas');
+            const ctx = canvas.getContext('2d');
+            let W, H, cols, drops;
+            const chars = '01アイウエオカキクケコABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*(){}[]<>';
+
+            function resize() {
+                W = canvas.width = window.innerWidth;
+                H = canvas.height = window.innerHeight;
+                cols = Math.floor(W / 14);
+                drops = Array(cols).fill(1);
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            function draw() {
+                ctx.fillStyle = 'rgba(0,0,0,0.04)';
+                ctx.fillRect(0, 0, W, H);
+                ctx.fillStyle = '#fff';
+                ctx.font = '12px Share Tech Mono, monospace';
+                drops.forEach((y, i) => {
+                    const char = chars[Math.floor(Math.random() * chars.length)];
+                    const alpha = Math.random() * 0.4 + 0.1;
+                    ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+                    ctx.fillText(char, i * 14, y * 14);
+                    if (y * 14 > H && Math.random() > 0.975) drops[i] = 0;
+                    drops[i]++;
+                });
+            }
+            setInterval(draw, 50);
+        })();
+
+        /* ── THREE.JS PARTICLES ───────────────────────── */
+        (function () {
+            const canvas = document.getElementById('three-canvas');
+            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 80;
+
+            // Particles
+            const N = window.innerWidth < 768 ? 800 : 2000;
+            const geo = new THREE.BufferGeometry();
+            const pos = new Float32Array(N * 3);
+            for (let i = 0; i < N * 3; i += 3) {
+                pos[i] = (Math.random() - 0.5) * 200;
+                pos[i + 1] = (Math.random() - 0.5) * 200;
+                pos[i + 2] = (Math.random() - 0.5) * 200;
+            }
+            geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+            const mat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.25, transparent: true, opacity: 0.5 });
+            const points = new THREE.Points(geo, mat);
+            scene.add(points);
+
+            let mx = 0, my = 0;
+            document.addEventListener('mousemove', e => {
+                mx = (e.clientX / window.innerWidth - 0.5) * 0.3;
+                my = (e.clientY / window.innerHeight - 0.5) * 0.3;
+            });
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+
+            let t = 0;
+            function animate() {
+                requestAnimationFrame(animate);
+                t += 0.001;
+                points.rotation.y = t + mx;
+                points.rotation.x = t * 0.4 + my;
+                renderer.render(scene, camera);
+            }
+            animate();
+        })();
+
+        /* ── CURSOR ───────────────────────────────────── */
+        (function () {
+            const dot = document.getElementById('cursor-dot');
+            const ring = document.getElementById('cursor-ring');
+            let rx = 0, ry = 0, dx = 0, dy = 0;
+            document.addEventListener('mousemove', e => { dx = e.clientX; dy = e.clientY; });
+            document.querySelectorAll('a, button, .skill-card, .project-card, .contact-card, .service-cell').forEach(el => {
+                el.addEventListener('mouseenter', () => ring.classList.add('hovered'));
+                el.addEventListener('mouseleave', () => ring.classList.remove('hovered'));
+            });
+            function lerp(a, b, t) { return a + (b - a) * t; }
+            function loop() {
+                dot.style.left = dx + 'px'; dot.style.top = dy + 'px';
+                rx = lerp(rx, dx, 0.12); ry = lerp(ry, dy, 0.12);
+                ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+                requestAnimationFrame(loop);
+            }
+            loop();
+        })();
+
+        /* ── LOADING SCREEN ───────────────────────────── */
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    initAnimations();
+                }, 800);
+            }, 2600);
+        });
+
+        /* ── TYPED.JS ─────────────────────────────────── */
+        function initTyped() {
+            new Typed('#typed-text', {
+                strings: ['Telegram Bot Developer', 'Cybersecurity Specialist', 'Automation Engineer', 'Backend Architect', 'Digital Phantom'],
+                typeSpeed: 60, backSpeed: 35, backDelay: 2000, loop: true, showCursor: false
+            });
+        }
+
+        /* ── LENIS SMOOTH SCROLL ──────────────────────── */
+        let lenis;
+        function initLenis() {
+            lenis = new Lenis({ duration: 1.4, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smooth: true });
+            function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+            requestAnimationFrame(raf);
+            lenis.on('scroll', ScrollTrigger.update);
+            gsap.ticker.add(time => lenis.raf(time * 1000));
+            gsap.ticker.lagSmoothing(0);
+        }
+
+        /* ── GSAP ANIMATIONS ──────────────────────────── */
+        function initAnimations() {
+            gsap.registerPlugin(ScrollTrigger);
+            initLenis();
+            initTyped();
+
+            // Nav scroll effect
+            window.addEventListener('scroll', () => {
+                const nav = document.getElementById('navbar');
+                nav.classList.toggle('scrolled', window.scrollY > 60);
+            });
+
+            // Hero reveals
+            gsap.to('.hero-eyebrow', { opacity: 1, y: 0, duration: 1, delay: 0.2, ease: 'power3.out' });
+            gsap.to('.hero-name', { opacity: 1, y: 0, duration: 1.2, delay: 0.5, ease: 'power3.out' });
+            gsap.to('.hero-typed-wrap', { opacity: 1, y: 0, duration: 1, delay: 1, ease: 'power3.out' });
+            gsap.to('.hero-btns', { opacity: 1, y: 0, duration: 1, delay: 1.2, ease: 'power3.out' });
+            gsap.to('.scroll-hint', { opacity: 1, duration: 1, delay: 2 });
+
+            // ScrollTrigger reveals
+            document.querySelectorAll('.reveal').forEach(el => {
+                if (el.closest('#hero')) return;
+                gsap.fromTo(el,
+                    { opacity: 0, y: 40 },
+                    {
+                        opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
+                        scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
+                    }
+                );
+            });
+
+            // Skill bars
+            document.querySelectorAll('.skill-card').forEach(card => {
+                const pct = card.dataset.skill;
+                const bar = card.querySelector('.skill-bar');
+                ScrollTrigger.create({
+                    trigger: card, start: 'top 85%',
+                    onEnter: () => { bar.style.width = pct + '%'; }
+                });
+            });
+
+            // Stats counters
+            document.querySelectorAll('.stat-cell').forEach(cell => {
+                const target = +cell.dataset.target;
+                const el = cell.querySelector('.counter');
+                ScrollTrigger.create({
+                    trigger: cell, start: 'top 85%',
+                    onEnter: () => {
+                        gsap.to({ val: 0 }, {
+                            val: target, duration: 2, ease: 'power2.out',
+                            onUpdate() { el.textContent = Math.round(this.targets()[0].val); }
+                        });
+                    }
+                });
+            });
+
+            // Glitch flashes on scroll
+            let lastGlitch = 0;
+            window.addEventListener('scroll', () => {
+                const now = Date.now();
+                if (now - lastGlitch > 3000 && Math.random() > 0.7) {
+                    lastGlitch = now;
+                    triggerGlitch();
+                }
+            });
+
+            // Hero name glitch on hover
+            const heroName = document.getElementById('hero-name');
+            if (heroName) {
+                heroName.addEventListener('mouseenter', () => {
+                    heroName.classList.add('glitching');
+                    setTimeout(() => heroName.classList.remove('glitching'), 200);
+                });
+            }
+        }
+
+        function triggerGlitch() {
+            const flash = document.getElementById('glitch-flash');
+            gsap.to(flash, {
+                opacity: 1, duration: 0.05, yoyo: true, repeat: 5, ease: 'none',
+                onComplete: () => { flash.style.opacity = 0; }
+            });
+        }
+
+        /* ── NAVBAR LINKS ─────────────────────────────── */
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', e => {
+                e.preventDefault();
+                const target = document.querySelector(a.getAttribute('href'));
+                if (target && lenis) lenis.scrollTo(target, { offset: -80, duration: 1.5 });
+                else if (target) target.scrollIntoView({ behavior: 'smooth' });
+                document.getElementById('mobile-menu').classList.remove('open');
+            });
+        });
+
+        /* ── MOBILE MENU ──────────────────────────────── */
+        document.getElementById('menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.add('open');
+        });
+        document.getElementById('mobile-close').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.remove('open');
+        });
+
+        /* ── TERMINAL ─────────────────────────────────── */
+        (function () {
+            const body = document.getElementById('terminal-body');
+            const input = document.getElementById('terminal-input');
+            let history = [], histIdx = -1;
+
+            const CMDS = {
+                help: () => [
+                    '<span class="t-dim">╔═══════════════════════════════╗</span>',
+                    '<span class="t-dim">║</span>  <span class="t-highlight">AVAILABLE COMMANDS</span>            <span class="t-dim">║</span>',
+                    '<span class="t-dim">╚═══════════════════════════════╝</span>',
+                    ' ',
+                    '<span class="t-highlight">help</span>       <span class="t-out">— Display this menu</span>',
+                    '<span class="t-highlight">skills</span>     <span class="t-out">— List technical capabilities</span>',
+                    '<span class="t-highlight">projects</span>   <span class="t-out">— View active deployments</span>',
+                    '<span class="t-highlight">contact</span>    <span class="t-out">— Show contact vectors</span>',
+                    '<span class="t-highlight">telegram</span>   <span class="t-out">— Telegram channel info</span>',
+                    '<span class="t-highlight">services</span>   <span class="t-out">— View available services</span>',
+                    '<span class="t-highlight">whoami</span>     <span class="t-out">— System identity</span>',
+                    '<span class="t-highlight">clear</span>      <span class="t-out">— Clear terminal</span>',
+                    ' ',
+                ],
+                skills: () => [
+                    '<span class="t-highlight">// CAPABILITIES MATRIX</span>',
+                    ' ',
+                    '<span class="t-out">Telegram Bots     </span><span class="t-highlight">████████████████████</span><span class="t-dim"> 96%</span>',
+                    '<span class="t-out">Automation        </span><span class="t-highlight">███████████████████░</span><span class="t-dim"> 94%</span>',
+                    '<span class="t-out">Python Dev        </span><span class="t-highlight">██████████████████░░</span><span class="t-dim"> 92%</span>',
+                    '<span class="t-out">Web Scraping      </span><span class="t-highlight">██████████████████░░</span><span class="t-dim"> 90%</span>',
+                    '<span class="t-out">API Integration   </span><span class="t-highlight">█████████████████░░░</span><span class="t-dim"> 88%</span>',
+                    '<span class="t-out">Backend Eng.      </span><span class="t-highlight">█████████████████░░░</span><span class="t-dim"> 86%</span>',
+                    '<span class="t-out">Linux Systems     </span><span class="t-highlight">██████████████████░░</span><span class="t-dim"> 90%</span>',
+                    '<span class="t-out">Security Research </span><span class="t-highlight">████████████████░░░░</span><span class="t-dim"> 84%</span>',
+                    ' ',
+                ],
+                projects: () => [
+                    '<span class="t-highlight">// ACTIVE DEPLOYMENTS</span>',
+                    ' ',
+                    '<span class="t-dim">[01]</span> <span class="t-highlight">Telegram Automation Engine</span>     <span class="t-out">ONLINE</span>',
+                    '<span class="t-dim">[02]</span> <span class="t-highlight">Community Management Platform</span>  <span class="t-out">ONLINE</span>',
+                    '<span class="t-dim">[03]</span> <span class="t-highlight">Real-Time Monitor Dashboard</span>    <span class="t-out">ONLINE</span>',
+                    '<span class="t-dim">[04]</span> <span class="t-highlight">Network Analysis Toolkit</span>       <span class="t-out">ONLINE</span>',
+                    '<span class="t-dim">[05]</span> <span class="t-highlight">Distributed Scraping Engine</span>    <span class="t-out">ONLINE</span>',
+                    '<span class="t-dim">[06]</span> <span class="t-highlight">AI-Powered Assistant Bot</span>       <span class="t-out">ONLINE</span>',
+                    ' ',
+                    '<span class="t-out">All systems operational. Uptime: 99.97%</span>',
+                    ' ',
+                ],
+                contact: () => [
+                    '<span class="t-highlight">// SECURE CONTACT VECTORS</span>',
+                    ' ',
+                    '<span class="t-out">WhatsApp</span>   <span class="t-link">wa.me/+201144118011</span>',
+                    '<span class="t-out">TG Channel</span> <span class="t-link">t.me/AZMA_XBAN</span>',
+                    '<span class="t-out">TG Direct</span>  <span class="t-link">t.me/AZMA_S1</span>',
+                    ' ',
+                    '<span class="t-dim">// All channels are monitored and active</span>',
+                    ' ',
+                ],
+                telegram: () => [
+                    '<span class="t-highlight">// TELEGRAM NETWORK</span>',
+                    ' ',
+                    '<span class="t-out">Channel</span>  <span class="t-link">@AZMA_XBAN</span>',
+                    '<span class="t-out">Direct</span>   <span class="t-link">@AZMA_S1</span>',
+                    ' ',
+                    '<span class="t-out">Status:</span> <span class="t-highlight">ACTIVE</span>',
+                    '<span class="t-out">Bots Running: 47</span>',
+                    '<span class="t-out">Uptime: 99.97%</span>',
+                    ' ',
+                ],
+                services: () => [
+                    '<span class="t-highlight">// DIGITAL SERVICES</span>',
+                    ' ',
+                    '<span class="t-dim">[01]</span> International Virtual Numbers',
+                    '<span class="t-dim">[02]</span> Global SMS Infrastructure',
+                    '<span class="t-dim">[03]</span> Business Verification Systems',
+                    '<span class="t-dim">[04]</span> Automated Number Delivery',
+                    '<span class="t-dim">[05]</span> Premium USA & UK Lines',
+                    '<span class="t-dim">[06]</span> Developer API Access',
+                    ' ',
+                    '<span class="t-out">Regions: USA / UK / Canada / DE / FR / NL / RU / UAE</span>',
+                    ' ',
+                ],
+                whoami: () => [
+                    ' ',
+                    '<span class="t-highlight">  AHMED AZMA</span>',
+                    '<span class="t-out">  Digital Systems Architect</span>',
+                    '<span class="t-out">  Telegram Automation Engineer</span>',
+                    '<span class="t-out">  Backend & Security Specialist</span>',
+                    ' ',
+                    '<span class="t-dim">  UID: 0xAZMA_7F3C | CLEARANCE: ALPHA | STATUS: ONLINE</span>',
+                    ' ',
+                ],
+                clear: () => { body.innerHTML = ''; return []; },
+            };
+
+            function addLines(lines) {
+                lines.forEach(l => {
+                    const span = document.createElement('span');
+                    span.className = 't-line';
+                    span.innerHTML = l;
+                    body.appendChild(span);
+                });
+                body.scrollTop = body.scrollHeight;
+            }
+
+            function addInput(cmd) {
+                const span = document.createElement('span');
+                span.className = 't-line';
+                span.innerHTML = `<span class="t-prompt">azma@phantom:~$ </span><span class="t-user">${cmd}</span>`;
+                body.appendChild(span);
+            }
+
+            function run(cmd) {
+                const c = cmd.trim().toLowerCase();
+                addInput(cmd);
+                if (!c) return;
+                history.unshift(c); histIdx = -1;
+                const fn = CMDS[c];
+                if (fn) {
+                    const out = fn();
+                    if (out && out.length) addLines(out);
+                } else {
+                    addLines([
+                        `<span class="t-out">Command not found: </span><span class="t-highlight">${c}</span>`,
+                        `<span class="t-dim">Type 'help' for available commands.</span>`,
+                        ' ',
+                    ]);
+                }
+                body.scrollTop = body.scrollHeight;
+            }
+
+            input.addEventListener('keydown', e => {
+                if (e.key === 'Enter') { run(input.value); input.value = ''; }
+                if (e.key === 'ArrowUp') {
+                    histIdx = Math.min(histIdx + 1, history.length - 1);
+                    input.value = history[histIdx] || '';
+                }
+                if (e.key === 'ArrowDown') {
+                    histIdx = Math.max(histIdx - 1, -1);
+                    input.value = histIdx === -1 ? '' : history[histIdx];
+                }
+            });
+
+            document.getElementById('terminal-section').addEventListener('click', () => input.focus());
+        })();
+
+        /* ── LIVE LOG ─────────────────────────────────── */
+        (function () {
+            const log = document.getElementById('live-log');
+            const msgs = [
+                '[0x4F2A] auth_module: handshake established',
+                '[0x7B1C] bot_engine: 47 handlers active',
+                '[0xA3E9] scraper: queue depth 1,847',
+                '[0x2D8F] api_gateway: req/s 2,341',
+                '[0x9C4B] db_pool: connections 128/512',
+                '[0x1F7E] automation: tasks pending 882',
+                '[0x6A3D] net_probe: latency 12ms',
+                '[0x8E2C] cron_job: next run in 00:04:17',
+                '[0x5B9A] memory: usage 34.7%',
+                '[0x3C6F] uptime: 99.97% — all green',
+            ];
+            let idx = 0;
+            function addLog() {
+                if (log.children.length > 5) log.removeChild(log.firstChild);
+                const span = document.createElement('span');
+                span.className = 'log-line';
+                span.textContent = msgs[idx++ % msgs.length];
+                log.appendChild(span);
+                setTimeout(addLog, 3000 + Math.random() * 2000);
+            }
+            setTimeout(addLog, 5000);
+        })();
+
+        /* ── 3D TILT ON PROJECT CARDS ────────────────── */
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const cx = rect.left + rect.width / 2;
+                const cy = rect.top + rect.height / 2;
+                const dx = (e.clientX - cx) / (rect.width / 2) * 6;
+                const dy = (e.clientY - cy) / (rect.height / 2) * 6;
+                card.style.transform = `perspective(800px) rotateY(${dx}deg) rotateX(${-dy}deg) translateY(-8px)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        });
+    </script>
+</body>
+</html>
